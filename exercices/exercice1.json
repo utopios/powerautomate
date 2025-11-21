@@ -1,0 +1,27 @@
+{
+  "type": "OpenApiConnection",
+  "inputs": {
+    "parameters": {
+      "emailMessage/To": "ihab@utopios.net",
+      "emailMessage/Subject": "un nouveau fichier @{triggerBody()?['Title']}",
+      "emailMessage/Body": "<p class=\"editor-paragraph\">Bonjour,</p><br><p class=\"editor-paragraph\">Un nouveau fichier a été ajouté.</p><br><p class=\"editor-paragraph\">Ihab</p>",
+      "emailMessage/Attachments": [
+        {
+          "Name": "@{triggerOutputs()?['body/{FilenameWithExtension}']}",
+          "ContentBytes": "@outputs('Obtenir_le_contenu_du_fichier')?['body']?['$content']"
+        }
+      ],
+      "emailMessage/Importance": "Normal"
+    },
+    "host": {
+      "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365",
+      "connection": "shared_office365",
+      "operationId": "SendEmailV2"
+    }
+  },
+  "runAfter": {
+    "Obtenir_le_contenu_du_fichier": [
+      "Succeeded"
+    ]
+  }
+}
